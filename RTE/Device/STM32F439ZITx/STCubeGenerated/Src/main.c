@@ -83,7 +83,6 @@ void stdout_putchar (uint8_t c){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t cnt_res = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -119,37 +118,37 @@ int main(void)
 jump:
     HAL_TIM_Base_Start(&htim1);
     HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);  // pull the TRIG pin low
-		__HAL_TIM_SET_COUNTER(&htim1, 0);
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
     while (__HAL_TIM_GET_COUNTER (&htim1) < 2U);  // wait for 2 us
     HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_SET);  // pull the TRIG pin HIGH
-		__HAL_TIM_SET_COUNTER(&htim1, 0);
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
     while (__HAL_TIM_GET_COUNTER (&htim1) < 10U);  // wait for 10 us
     HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);  // pull the TRIG pin low
 
-		__HAL_TIM_SET_COUNTER(&htim1, 0);
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
     while (HAL_GPIO_ReadPin(ECHO_PORT, ECHO_PIN)) { //waiting 5us if echo pin already high to reset, if not start again with trigger
         if (__HAL_TIM_GET_COUNTER (&htim1) >= 5U) {
             goto jump;
         }
-    }		
+    }
 
-		__HAL_TIM_SET_COUNTER(&htim1, 0);
+    __HAL_TIM_SET_COUNTER(&htim1, 0);
     while (!(HAL_GPIO_ReadPin (ECHO_PORT, ECHO_PIN))) { // wait for the echo pin to go high - go through
-			if (__HAL_TIM_GET_COUNTER (&htim1) >= 1000U) {
-					goto jump;
-			}
-		}
-		
-		__HAL_TIM_SET_COUNTER(&htim1, 0); //set counter as soon echo went high
-		while ((HAL_GPIO_ReadPin (ECHO_PORT, ECHO_PIN))){}; // wait for the echo pin to go low
+      if (__HAL_TIM_GET_COUNTER (&htim1) >= 1000U) {
+        goto jump;
+      }
+    }
+
+    __HAL_TIM_SET_COUNTER(&htim1, 0); //set counter as soon echo went high
+    while ((HAL_GPIO_ReadPin (ECHO_PORT, ECHO_PIN))){}; // wait for the echo pin to go low
 
     time = __HAL_TIM_GET_COUNTER (&htim1); //Get counter value - measure echo pulse width
     Distance =  (float)time * (float)0.0171821;
-		
-		printf("%f cm\r\n", Distance);
-		
-		time = 0;
-		HAL_Delay(500);
+
+    printf("%f cm\r\n", Distance);
+
+    time = 0;
+    HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
