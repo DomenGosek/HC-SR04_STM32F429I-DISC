@@ -1,0 +1,10 @@
+solution:
+  created-by: uv2csolution@1.2.0
+  created-for: CMSIS-Toolbox@2.2.0
+  compiler: AC6
+  target-types:
+    - type: HCSR04
+      device: STM32F439ZITx
+      optimize: none
+  projects:
+    - project: HC-SR04.cproject.yml
